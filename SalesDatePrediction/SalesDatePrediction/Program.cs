@@ -13,9 +13,6 @@ builder.Services.AddDbContext<SalesContext>(options =>
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Configuración de la base de datos
-//builder.Services.AddSqlServer<SalesContext>("Data Source=LAPTOP-PH1R9POH;Initial Catalog=SalesDatePrediction;Integrated Security=True;TrustServerCertificate=True;");
-
 // Repositorios
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
 builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
