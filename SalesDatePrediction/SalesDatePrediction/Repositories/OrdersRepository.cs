@@ -17,7 +17,7 @@ namespace SalesDatePrediction.Repositories
         public async Task<IEnumerable<Orders>> GetOrdersAsync(int customerId)
         {
             // Suponiendo que el contexto tiene un DbSet<Orders> llamado Orders y una propiedad CustomerName en Orders
-            return await _context.OrdersVirtual
+            return await _context.Orders
                 .Where(o => o.CustomerId == customerId)
                 .ToListAsync();
         }

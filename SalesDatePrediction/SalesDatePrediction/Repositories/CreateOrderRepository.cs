@@ -14,7 +14,7 @@ namespace SalesDatePrediction.Repositories
 
         public async Task<Orders> CreateOrderAsync(Orders order)
         {
-            _context.OrdersVirtual.Add(order);
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
             return order;
         }

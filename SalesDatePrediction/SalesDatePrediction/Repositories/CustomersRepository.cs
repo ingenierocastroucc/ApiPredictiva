@@ -17,7 +17,7 @@ namespace SalesDatePrediction.Repositories
         public async Task<IEnumerable<Customers>> GetCustomersAsync()
         {
             // Primero, obtén todos los pedidos.
-            var orders = await _context.OrdersVirtual
+            var orders = await _context.Orders
                 .Select(o => new
                 {
                     o.CustomerId,
@@ -26,7 +26,7 @@ namespace SalesDatePrediction.Repositories
                 .ToListAsync(); // Obtén la lista de pedidos en memoria
 
             // Obtén todos los clientes.
-            var customers = await _context.CustomersVirtual
+            var customers = await _context.Customers // Cambiado a Customers
                 .Select(c => new
                 {
                     c.CustomerId,
@@ -85,7 +85,7 @@ namespace SalesDatePrediction.Repositories
             {
                 CustomerId = r.CustomerId,
                 CustomerName = r.CustomerName,
-                LastOrderDate = r.LastOrderDate, // No necesita conversión
+                LastOrderDate = r.LastOrderDate,
                 NextPredictedOrder = r.LastOrderDate != default(DateTime)
                     ? r.LastOrderDate.AddDays(r.AvgDaysBetweenOrders > 0 ? r.AvgDaysBetweenOrders : 30)
                     : (DateTime?)null
@@ -94,5 +94,4 @@ namespace SalesDatePrediction.Repositories
             return finalResult;
         }
     }
-
 }

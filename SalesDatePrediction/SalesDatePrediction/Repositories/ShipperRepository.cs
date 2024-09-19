@@ -16,7 +16,7 @@ namespace SalesDatePrediction.Repositories
         public async Task<IEnumerable<Shipper>> GetShippersAsync()
         {
             // Consultar la base de datos para obtener la lista de productos
-            return await _context.ShipperVirtual.ToListAsync();
+            return await _context.Shippers.ToListAsync();
         }
     }
 }

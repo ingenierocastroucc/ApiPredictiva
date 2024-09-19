@@ -16,7 +16,7 @@ namespace SalesDatePrediction.Repositories
         public async Task<IEnumerable<Employees>> GetEmployeesAsync()
         {
             // Consultar la base de datos para obtener la lista de empleados
-            return await _context.EmployeesVirtual.ToListAsync();
+            return await _context.Employees.ToListAsync();
         }
     }
 

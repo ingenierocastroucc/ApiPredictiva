@@ -1,139 +1,114 @@
 ﻿#region Documentación
-/****************************************************************************************************
+/**************************************************************************************************** 
 * API REST                                                      
-****************************************************************************************************
-* Unidad        : <.NET/C# para el contexto y la creacion de data>                                                                      
-* DescripciÓn   : <Logica de negocio para el contexto y la creacion de data>                                                      
-* Autor         : <Pedro Castro>
-* Fecha         : <07-09-2024>                                                                             
+**************************************************************************************************** 
+* Unidad        : .NET/C# para el contexto y la creación de data                                                                      
+* DescripciÓn   : Lógica de negocio para el contexto y la creación de data                                                       
+* Autor         : Pedro Castro 
+* Fecha         : 07-09-2024 
 ***************************************************************************************************/
 #endregion Documentación
 
 using SalesDatePrediction.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using SalesDatePrediction.Models.Models;
 
 namespace SalesDatePrediction.Context
 {
     public class SalesContext : DbContext
     {
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de los Customers
-        /// </summary>
-        public DbSet<Customers> CustomersVirtual { get; set; }
+        public DbSet<Customers> Customers { get; set; }
+        public DbSet<Employees> Employees { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Shipper> Shippers { get; set; }
 
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de los Employees
-        /// </summary>
-        public DbSet<Employees> EmployeesVirtual { get; set; }
-
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de las Orders
-        /// </summary>
-        public DbSet<Orders> OrdersVirtual { get; set; }
-
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de las OrderDetails
-        /// </summary>
-        public DbSet<OrderDetails> OrdersDetailVirtual { get; set; }
-
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de los Product
-        /// </summary>
-        public DbSet<Product> ProductlVirtual { get; set; }
-
-        /// <summary>
-        /// Propiedad para la obtencion del Dbset de los Shipper
-        /// </summary>
-        public DbSet<Shipper> ShipperVirtual { get; set; }
-
-        /// <summary>
-        /// Propiedad para el seteo en la base de datos
-        /// </summary>
         public SalesContext(DbContextOptions<SalesContext> options) : base(options) { }
 
-        // Método para configurar el modelo
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            List<Customers> customersInit = new List<Customers>();
+            ConfigureCustomers(modelBuilder);
+            ConfigureOrders(modelBuilder);
+            ConfigureOrderDetails(modelBuilder);
+            ConfigureEmployees(modelBuilder);
+            ConfigureProducts(modelBuilder);
+            ConfigureShippers(modelBuilder);
+        }
 
-            modelBuilder.Entity<Customers>(customers =>
+        public void ConfigureCustomers(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Customers>(entity =>
             {
-                customers.ToTable("Customers");
-                customers.HasKey(p => p.CustomerId);
-                customers.Property(p => p.CustomerName);
-                customers.Property(p => p.LastOrderDate);
-                customers.Property(p => p.NextPredictedOrder);
-                customers.HasData(customersInit);
-            }
-            );
-
-            List<Orders> ordersInit = new List<Orders>();
-
-            modelBuilder.Entity<Orders>(orders =>
-            {
-                orders.ToTable("Orders");
-                orders.HasKey(p => p.OrderId);
-                orders.Property(p => p.CustomerId);
-                orders.Property(p => p.EmpId);
-                orders.Property(p => p.ShipName);
-                orders.Property(p => p.ShipAddress);
-                orders.Property(p => p.ShipCity);
-                orders.Property(p => p.OrderDate);
-                orders.Property(p => p.RequireDdate);
-                orders.Property(p => p.ShippedDate);
-                orders.Property(p => p.Freight);
-                orders.Property(p => p.ShipCountry);
-                orders.HasData(ordersInit);
+                entity.ToTable("Customers");
+                entity.HasKey(c => c.CustomerId);
+                entity.Property(c => c.CustomerName).IsRequired().HasMaxLength(100);
+                entity.Property(c => c.LastOrderDate);
+                entity.Property(c => c.NextPredictedOrder);
             });
+        }
 
-            List<OrderDetails> ordersDetailInit = new List<OrderDetails>();
-
-            modelBuilder.Entity<OrderDetails>(orderDetails =>
+        public void ConfigureOrders(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Orders>(entity =>
             {
-                orderDetails.ToTable("OrderDetails");
-                orderDetails.HasKey(od => od.OrderId);
-                orderDetails.Property(od => od.ProductId);
-                orderDetails.Property(od => od.UnitPrice);
-                orderDetails.Property(od => od.Qty);
-                orderDetails.Property(od => od.Discount);
-                orderDetails.HasData(ordersDetailInit);
+                entity.ToTable("Orders");
+                entity.HasKey(o => o.OrderId);
+                entity.Property(o => o.CustomerId).IsRequired();
+                entity.Property(o => o.EmpId).IsRequired();
+                entity.Property(o => o.ShipName).HasMaxLength(100);
+                entity.Property(o => o.ShipAddress).HasMaxLength(250);
+                entity.Property(o => o.ShipCity).HasMaxLength(100);
+                entity.Property(o => o.OrderDate).IsRequired();
+                entity.Property(o => o.RequireDdate);
+                entity.Property(o => o.ShippedDate);
+                entity.Property(o => o.Freight);
+                entity.Property(o => o.ShipCountry).HasMaxLength(100);
             });
+        }
 
-            List<Employees> employeesInit = new List<Employees>();
-
-            modelBuilder.Entity<Employees>(employees =>
+        public void ConfigureOrderDetails(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderDetails>(entity =>
             {
-                employees.ToTable("Employees");
-                employees.HasKey(p => p.EmpId);
-                employees.Property(p => p.FirstName);
-                employees.Property(p => p.LastName);
-                employees.HasData(employeesInit);
-            }
-            );
+                entity.ToTable("OrderDetails");
+                entity.HasKey(od => new { od.OrderId, od.ProductId });
+                entity.Property(od => od.UnitPrice);
+                entity.Property(od => od.Qty);
+                entity.Property(od => od.Discount);
+            });
+        }
 
-            List<Product> productInit = new List<Product>();
-
-            modelBuilder.Entity<Product>(products =>
+        public void ConfigureEmployees(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employees>(entity =>
             {
-                products.ToTable("Products");
-                products.HasKey(p => p.ProductId);
-                products.Property(p => p.ProductName);
-                products.HasData(employeesInit);
-            }
-            );
+                entity.ToTable("Employees");
+                entity.HasKey(e => e.EmpId);
+                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
+            });
+        }
 
-            List<Shipper> ShipperInit = new List<Shipper>();
-
-            modelBuilder.Entity<Shipper>(shipper =>
+        public void ConfigureProducts(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>(entity =>
             {
-                shipper.ToTable("Shippers");
-                shipper.HasKey(p => p.ShipperId);
-                shipper.Property(p => p.CompanyName);
-                shipper.HasData(employeesInit);
-            }
-            );
+                entity.ToTable("Products");
+                entity.HasKey(p => p.ProductId);
+                entity.Property(p => p.ProductName).IsRequired().HasMaxLength(100);
+            });
+        }
+
+        public void ConfigureShippers(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Shipper>(entity =>
+            {
+                entity.ToTable("Shippers");
+                entity.HasKey(s => s.ShipperId);
+                entity.Property(s => s.CompanyName).IsRequired().HasMaxLength(100);
+            });
         }
     }
-
 }
