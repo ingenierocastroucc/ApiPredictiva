@@ -6,11 +6,15 @@ using SalesDatePrediction.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<SalesContext>(options =>
+    options.UseSqlServer(connectionString));
+
 // Add services to the container.
 builder.Services.AddControllers();
 
 // Configuración de la base de datos
-builder.Services.AddSqlServer<SalesContext>("Data Source=LAPTOP-PH1R9POH;Initial Catalog=SalesDatePrediction;Integrated Security=True;TrustServerCertificate=True;");
+//builder.Services.AddSqlServer<SalesContext>("Data Source=LAPTOP-PH1R9POH;Initial Catalog=SalesDatePrediction;Integrated Security=True;TrustServerCertificate=True;");
 
 // Repositorios
 builder.Services.AddScoped<ICustomersRepository, CustomersRepository>();
