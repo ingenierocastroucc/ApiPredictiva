@@ -14,7 +14,7 @@ namespace SalesDatePrediction.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Customers>> GetCustomersAsync()
+        public async Task<IEnumerable<Customers>> GetCustomersAsync(CancellationToken cancellationToken)
         {
             // Primero, obtén todos los pedidos.
             var orders = await _context.Orders

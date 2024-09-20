@@ -2,7 +2,7 @@
 /**************************************************************************************************** 
 * Endpoints:
 * 1. GET api/Orders
-*    - Descripción: Recupera una lista de todos los empleados registrados.
+*    - Descripción: Recupera una lista de todos las ordenes registradas.
 *    - Respuestas:
 *      - 200 OK: Devuelve una lista de clientes en formato JSON.
 *      - 404 Not Found: No se encontraron ordenes.

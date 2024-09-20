@@ -31,11 +31,11 @@ namespace SalesDatePrediction.Controllers
         /// </summary>
         /// <returns>Una lista de clientes.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customers>>> GetCustomers()
+        public async Task<ActionResult<IEnumerable<Customers>>> GetCustomers(CancellationToken cancellationToken)
         {
             try
             {
-                var customers = await _customerRepository.GetCustomersAsync();
+                var customers = await _customerRepository.GetCustomersAsync(cancellationToken);
                 if (customers == null || !customers.Any())
                 {
                     return NotFound("No se encontraron clientes.");

@@ -1,4 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#region Documentación
+/**************************************************************************************************** 
+* Endpoints:
+* 1. GET api/OrdersManagement
+*    - Descripción: Crea un registro de una orden nueva con todos sus detalles.
+*    - Respuestas:
+*      - 200 OK: Devuelve una lista de la orden creada en formato JSON.
+*      - 500 Internal Server Error: Ocurrió un error en el servidor al procesar la solicitud.
+***************************************************************************************************/
+#endregion Documentación
+using Microsoft.AspNetCore.Mvc;
 using SalesDatePrediction.Models.Models;
 using SalesDatePrediction.Models;
 using SalesDatePrediction.Repositories;
