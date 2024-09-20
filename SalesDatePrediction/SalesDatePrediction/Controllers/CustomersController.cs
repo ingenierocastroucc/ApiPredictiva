@@ -20,10 +20,12 @@ namespace SalesDatePrediction.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomersRepository _customerRepository;
+        private readonly ILogger<OrdersManagementController> _logger;
 
-        public CustomersController(ICustomersRepository customerRepository)
+        public CustomersController(ICustomersRepository customerRepository, ILogger<OrdersManagementController> logger)
         {
             _customerRepository = customerRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -38,6 +40,7 @@ namespace SalesDatePrediction.Controllers
                 var customers = await _customerRepository.GetCustomersAsync(cancellationToken);
                 if (customers == null || !customers.Any())
                 {
+                    _logger.LogWarning("No se encontraron clientes.");
                     return NotFound("No se encontraron clientes.");
                 }
 
@@ -45,6 +48,7 @@ namespace SalesDatePrediction.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Ocurrió un error al obtener el listado de clientes.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al recuperar los clientes. ");
             }
         }

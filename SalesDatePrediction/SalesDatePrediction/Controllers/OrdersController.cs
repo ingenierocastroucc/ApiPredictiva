@@ -21,10 +21,12 @@ namespace SalesDatePrediction.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrdersRepository _orderRepository;
+        private readonly ILogger<ProductsController> _logger;
 
-        public OrdersController(IOrdersRepository orderRepository)
+        public OrdersController(IOrdersRepository orderRepository, ILogger<ProductsController> logger)
         {
             _orderRepository = orderRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace SalesDatePrediction.Controllers
 
             if (orders == null || !orders.Any())
             {
+                _logger.LogWarning($"No se encontraron órdenes para el cliente con ID {customerId}.");
                 return NotFound($"No se encontraron órdenes para el cliente con ID {customerId}.");
             }
 

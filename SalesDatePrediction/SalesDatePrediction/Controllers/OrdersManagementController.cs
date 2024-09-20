@@ -44,7 +44,7 @@ namespace SalesDatePrediction.Controllers
 
             if (request.Order == null || request.OrderDetails == null)
             {
-                _logger.LogWarning("CreateOrder llamado con orden o detalles de orden inválidos.");
+                _logger.LogWarning("La orden y los detalles de la orden no pueden ser nulos.");
                 return BadRequest("La orden y los detalles de la orden no pueden ser nulos.");
             }
 

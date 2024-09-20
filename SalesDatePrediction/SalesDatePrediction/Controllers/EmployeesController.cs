@@ -20,10 +20,12 @@ namespace SalesDatePrediction.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeesRepository _employeeRepository;
+        private readonly ILogger<ProductsController> _logger;
 
-        public EmployeesController(IEmployeesRepository employeeRepository)
+        public EmployeesController(IEmployeesRepository employeeRepository, ILogger<ProductsController> logger)
         {
             _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+            _logger = logger;
         }
 
         /// <summary>
@@ -39,7 +41,8 @@ namespace SalesDatePrediction.Controllers
             {
                 var employees = await _employeeRepository.GetEmployeesAsync();
                 if (employees == null || !employees.Any())
-                {
+                {   
+                    _logger.LogWarning("No se encontraron empleados.");
                     return NotFound("No se encontraron empleados.");
                 }
 
@@ -47,6 +50,7 @@ namespace SalesDatePrediction.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Ocurrió un error al recuperar los empleados.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al recuperar los empleados.");
             }
         }
