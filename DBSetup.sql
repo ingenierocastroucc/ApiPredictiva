@@ -50,17 +50,18 @@ INSERT INTO Employees (Firstname, Lastname) VALUES
 
 -- Creacion de la tabla de Productos
 CREATE TABLE Products (
-    Productid INT PRIMARY KEY IDENTITY(1,1),     -- Identificador único auto-incrementable
-    Productname NVARCHAR(100) NOT NULL           -- Nombre del producto
+    Productid INT PRIMARY KEY IDENTITY(1,1),      -- Identificador único auto-incrementable
+    Productname NVARCHAR(100) NOT NULL,           -- Nombre del producto
+	Quantity INT NOT NULL,
 );
 
 -- La tabla Products almacena información sobre los productos disponibles.
 
 -- Insertar datos en la tabla de Productos
-INSERT INTO Products (Productname) VALUES
-('Widget A'),
-('Widget B'),
-('Widget C');
+INSERT INTO Products (Productname, Quantity) VALUES
+('Widget A', 10),
+('Widget B', 20),
+('Widget C', 30);
 
 -- Crear tabla de Órdenes
 CREATE TABLE Orders (

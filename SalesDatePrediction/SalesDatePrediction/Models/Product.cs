@@ -20,6 +20,10 @@ namespace SalesDatePrediction.Models
         /// Propiedad para alamacenar el nombre del producto
         /// </summary>
         public string ProductName { get; set; }
+        /// <summary>
+        /// Propiedad para almacenar la cantidad de producto disponible
+        /// </summary>
+        public int Quantity { get; set; }
     }
 
 }

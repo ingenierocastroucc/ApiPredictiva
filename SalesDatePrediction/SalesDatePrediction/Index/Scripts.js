@@ -1,5 +1,4 @@
 ﻿document.getElementById('update-button').addEventListener('click', () => {
-    debugger;
     // URL de la API
     const apiUrl = 'https://localhost:7170/api/Employees';
 
