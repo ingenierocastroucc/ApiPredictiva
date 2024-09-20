@@ -13,7 +13,7 @@ namespace SalesDatePrediction.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Shipper>> GetShippersAsync()
+        public async Task<IEnumerable<Shipper>> GetShippersAsync(CancellationToken cancellationToken)
         {
             // Consultar la base de datos para obtener la lista de productos
             return await _context.Shippers.ToListAsync();
