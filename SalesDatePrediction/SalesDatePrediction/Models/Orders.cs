@@ -26,6 +26,10 @@ namespace SalesDatePrediction.Models
         /// </summary>
         public int EmpId { get; set; }
         /// <summary>
+        /// Propiedad para alamacenar el Id del transportista
+        /// </summary>
+        public int Shipperid { get; set; }
+        /// <summary>
         /// Propiedad para alamacenar el nombre del transportista
         /// </summary>
         public string ShipName { get; set; }

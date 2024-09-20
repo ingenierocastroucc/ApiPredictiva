@@ -1,7 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#region Documentación
+/**************************************************************************************************** 
+* Endpoints:
+* 1. GET api/Orders
+*    - Descripción: Recupera una lista de todos los empleados registrados.
+*    - Respuestas:
+*      - 200 OK: Devuelve una lista de clientes en formato JSON.
+*      - 404 Not Found: No se encontraron ordenes.
+*      - 500 Internal Server Error: Ocurrió un error en el servidor al procesar la solicitud.
+***************************************************************************************************/
+#endregion Documentación
+
+using Microsoft.AspNetCore.Mvc;
 using SalesDatePrediction.Models.Models;
 using SalesDatePrediction.Repositories;
-using System.Net;
 
 namespace SalesDatePrediction.Controllers
 {

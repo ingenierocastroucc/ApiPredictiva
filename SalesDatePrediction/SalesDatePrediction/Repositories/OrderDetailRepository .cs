@@ -12,7 +12,7 @@ public class OrderDetailRepository : IOrderDetailRepository
         _context = context;
     }
 
-    public async Task AddOrderDetailAsync(OrderDetails orderDetail)
+    public async Task AddOrderDetailAsync(OrderDetails orderDetail, CancellationToken cancellationToken)
     {
         if (orderDetail == null)
         {

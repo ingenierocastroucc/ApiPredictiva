@@ -4,6 +4,6 @@ namespace SalesDatePrediction.Repositories
 {
     public interface IOrderDetailRepository
     {
-        Task AddOrderDetailAsync(OrderDetails orderDetails);
+        Task AddOrderDetailAsync(OrderDetails orderDetails, CancellationToken cancellationToken);
     }
 }

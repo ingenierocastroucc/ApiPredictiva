@@ -5,7 +5,7 @@
 *    - Descripción: Recupera una lista de todos los empleados registrados.
 *    - Respuestas:
 *      - 200 OK: Devuelve una lista de clientes en formato JSON.
-*      - 404 Not Found: No se encontraron clientes.
+*      - 404 Not Found: No se encontraron empleados.
 *      - 500 Internal Server Error: Ocurrió un error en el servidor al procesar la solicitud.
 ***************************************************************************************************/
 #endregion Documentación

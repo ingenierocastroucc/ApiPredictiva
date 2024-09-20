@@ -45,7 +45,7 @@ namespace SalesDatePrediction.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error interno del servidor: ");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al recuperar los clientes. ");
             }
         }
     }

@@ -57,6 +57,7 @@ namespace SalesDatePrediction.Context
                 entity.HasKey(o => o.OrderId);
                 entity.Property(o => o.CustomerId).IsRequired();
                 entity.Property(o => o.EmpId).IsRequired();
+                entity.Property(o => o.Shipperid).IsRequired();
                 entity.Property(o => o.ShipName).HasMaxLength(100);
                 entity.Property(o => o.ShipAddress).HasMaxLength(250);
                 entity.Property(o => o.ShipCity).HasMaxLength(100);

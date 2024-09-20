@@ -11,38 +11,52 @@ namespace SalesDatePrediction.Controllers
     {
         private readonly ICreateOrderRepository _orderRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly ILogger<OrdersManagementController> _logger;
 
-        public OrdersManagementController(ICreateOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
+        public OrdersManagementController(
+            ICreateOrderRepository orderRepository,
+            IOrderDetailRepository orderDetailRepository,
+            ILogger<OrdersManagementController> logger)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
+        public async Task<ActionResult<Orders>> CreateOrder([FromBody] CreateOrderRequest request, CancellationToken cancellationToken)
         {
             if (request == null)
             {
-                return BadRequest("Request body cannot be null.");
+                _logger.LogWarning("CreateOrder llamado con solicitud nula.");
+                return BadRequest("El cuerpo de la solicitud no puede ser nulo.");
             }
 
             if (request.Order == null || request.OrderDetails == null)
             {
-                return BadRequest("Order and OrderDetails cannot be null.");
+                _logger.LogWarning("CreateOrder llamado con orden o detalles de orden inválidos.");
+                return BadRequest("La orden y los detalles de la orden no pueden ser nulos.");
             }
 
-            // Crea la orden
-            var createdOrder = await _orderRepository.CreateOrderAsync(request.Order);
+            try
+            {
+                // Crea la orden
+                var createdOrder = await _orderRepository.CreateOrderAsync(request.Order, cancellationToken);
 
-            // Asocia el ID de la orden a los detalles de la orden
-            request.OrderDetails.OrderId = createdOrder.OrderId;
+                // Asocia el ID de la orden a los detalles de la orden
+                request.OrderDetails.OrderId = createdOrder.OrderId;
 
-            // Guarda los detalles de la orden
-            await _orderDetailRepository.AddOrderDetailAsync(request.OrderDetails);
+                // Guarda los detalles de la orden
+                await _orderDetailRepository.AddOrderDetailAsync(request.OrderDetails, cancellationToken);
 
-            // Devuelve una respuesta creada con la nueva orden
-            return CreatedAtAction(nameof(CreateOrder), new { id = createdOrder.OrderId }, createdOrder);
+                // Devuelve una respuesta creada con la nueva orden
+                return CreatedAtAction(nameof(CreateOrder), new { id = createdOrder.OrderId }, createdOrder);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocurrió un error al crear la orden.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al registrar las ordenes.");
+            }
         }
     }
-
 }

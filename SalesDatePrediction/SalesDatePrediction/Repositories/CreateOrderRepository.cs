@@ -12,7 +12,7 @@ namespace SalesDatePrediction.Repositories
             _context = context;
         }
 
-        public async Task<Orders> CreateOrderAsync(Orders order)
+        public async Task<Orders> CreateOrderAsync(Orders order, CancellationToken cancellationToken)
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
